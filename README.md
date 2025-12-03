@@ -12,4 +12,5 @@ program config backups.
 - wofi (app launcher)
 - yazi (terminal file manger)
 - bash (bash related stuff)
+- ly (tui login manager)
 
