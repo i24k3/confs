@@ -1,0 +1,97 @@
+* {
+    font-family: Cantarell, Noto Sans, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    min-height: 0;
+    padding: 0 10px;
+    margin: 1px;
+    border: none;
+    color: #ffffff;
+}
+
+window#waybar {
+    background: rgba(10, 10, 20, 0.85);
+    border-radius: 0;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: none;
+}
+
+/* ====================== WORKSPACES ====================== */
+#workspaces {
+    margin: 0 2px;
+}
+
+#workspaces button {
+    padding: 4px 0px;           /* a little vertical padding so the border has space */
+    color: #666666;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    box-shadow: none;
+    transition: all 0.15s ease;
+}
+
+/* Occupied workspaces (has windows) → only thin cyan underline */
+#workspaces button:not(.focused):not(.empty) {
+    color: #88c0d0;
+    border: 1px solid white;
+}
+
+/* Focused workspace → your original white text + full 1px white border */
+#workspaces button.focused {
+    color: #ffffff;
+    border: 1px solid lightblue;
+    background: transparent;
+}
+
+/* Urgent workspace */
+#workspaces button.urgent {
+    color: #bf616a;
+    border-bottom: 3px solid #bf616a;
+}
+
+/* Hover (keeps your no-background-hover philosophy) */
+#workspaces button:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+/* ====================== OTHER MODULES ====================== */
+#mpris { 
+    color: #88c0d0; 
+    padding-right: 16px; 
+}
+
+#keyboard-state, #battery, #pulseaudio, #backlight, #network, #clock {
+    padding: 0 14px;
+}
+
+#clock { 
+    font-weight: bold; 
+}
+
+*:hover { 
+    background: transparent; 
+    box-shadow: none; 
+}
+
+/* Kill tooltips */
+tooltip { 
+    background: transparent; 
+    border: none; 
+    opacity: 0; 
+}
+
+tooltip label { 
+    color: transparent; 
+}
+
+/* Mode indicator (shows "mouse", "drag", "resize", etc.) */
+#mode {
+    /* background: rgba(255,255,255,0.1); */
+    border: 1px solid white;
+    color: white;
+    font-weight: bold;
+    padding: 0 14px;
+    margin: 0 6px;
+    border-radius: 8px;
+}

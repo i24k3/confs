@@ -1,0 +1,298 @@
+# exec_always --no-startup-id fcitx5
+# Read `man 5 sway` for a complete reference.
+
+# Basic Shortcuts--------------------------------------------------------------
+# mod + enter = open a terminal (kitty)
+# mod + shift + enter = open a terminal (kterm)
+# alt + q = kill focused window
+# alt + space = toggle application launcher (wofi drun menu)
+# mod + shift + r = reload sway configuration
+# alt + shift + e = prompt to exit sway
+
+# Focus Movement (Vim-style keys)----------------------------------------------
+# mod + h = focus window to the left
+# mod + j = focus window down
+# mod + k = focus window up
+# mod + l = focus window to the right
+
+# Focus Movement (Arrow keys)--------------------------------------------------
+# mod + left = focus window to the left
+# mod + down = focus window down
+# mod + up = focus window up
+# mod + right = focus window to the right
+
+# Move Windows (Vim-style keys)------------------------------------------------
+# mod + shift + h = move focused window left
+# mod + shift + j = move focused window down
+# mod + shift + k = move focused window up
+# mod + shift + l = move focused window right
+
+# Move Windows (Arrow keys)----------------------------------------------------
+# mod + shift + left = move focused window left
+# mod + shift + down = move focused window down
+# mod + shift + up = move focused window up
+# mod + shift + right = move focused window right
+
+# Workspace Switching----------------------------------------------------------
+# mod + tab = switch to previously active workspace
+# alt + tab = switch to next workspace
+# alt + shift + tab = switch to previous workspace
+
+# Layout and Window Management-------------------------------------------------
+# mod + n = split container horizontally
+# mod + m = split container vertically
+# mod + s = set layout to stacking
+# mod + t = set layout to tabbed
+# mod + g = toggle between split and default layout
+# mod + f = toggle fullscreen for focused window
+# mod + shift + space = toggle floating mode for focused window
+# mod + space = toggle focus mode (tiling/floating/tabbed/stacking)
+# mod + a = focus parent container
+# mod + shift + = = move focused window to scratchpad
+# mod + - = show scratchpad window
+# mod + r = enter resize mode (use h/j/k/l or arrows to resize, enter/esc to exit)
+
+# Media and System Controls----------------------------------------------------
+# print = take a screenshot (grim)
+# shift +  print = screenshot region select
+# mod + shift + t = toggle touchpad enabled/disabled
+
+# Modes------------------------------------------------------------------------
+# alt + shift + m = enter mouse control mode (h/j/k/l for movement, u/n for scrolling, return/space/m for clicks, q/esc to exit)
+# alt + shift + m + v = enter mouse visual mode to higlight
+# alt + shift + m + u = scroll up in mouse visual mode  
+# alt + shift + m + n = scroll down in mouse visual mode  
+# mod (super) + mouse-drag = enter floating resize/drag mode for windows
+
+
+# variables
+set $mod Mod4
+set $alt Mod1
+set $left h
+set $down j
+set $up k
+set $right l
+
+# utils
+set $term kitty
+# set $menu wofi --show drun --allow-images
+
+# ──────────────────────── Minimal black / white colors ────────────────────────
+set $bg        #0a0a14
+set $bg2       #11111b
+set $gray      #666680
+set $lightgray #a0a0b0
+set $white     #ffffff
+set $red       #ff5555       # only for urgent
+
+# ──────────────────────── Borders & gaps (clean & sharp) ────────────────────────
+for_window [class=".*"] border pixel 2
+gaps inner 2
+# gaps outer 10
+gaps top    0
+gaps bottom 0
+gaps left   2
+gaps right  2
+
+client.focused          $white $white $bg      $white
+client.focused_inactive $bg2   $bg2   $lightgray $bg2
+client.unfocused        $bg2   $bg2   $gray      $bg2
+
+output HDMI-A-1 resolution 1920x1080 position 1920,0
+
+# touchpad conf.
+input "type:touchpad" {
+    dwt enabled
+    tap enabled
+    natural_scroll enabled
+    middle_emulation enabled
+}
+
+# Touchpad toggle (Super+shift+t)
+set $touchpad_identifier "type:touchpad"
+bindsym $mod+Shift+t exec swaymsg input $touchpad_identifier events toggle enabled disabled && \
+                notify-send "Touchpad" "$(swaymsg -t get_inputs | grep -A 15 $touchpad_identifier | grep -q 'events.*enabled' && echo Disabled || echo Enabled)"
+
+### Key bindings
+# Basics
+bindsym $mod+Return exec $term
+bindsym $mod+Shift+Return exec $kterm
+bindsym $alt+q kill
+# bindsym $alt+Space exec $menu
+bindsym $alt+Space exec pkill -x wofi 2>/dev/null || wofi --show drun --allow-images
+
+floating_modifier $mod normal
+bindsym $mod+Shift+r reload
+bindsym $alt+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
+
+# Focus
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+bindsym $mod+left focus left
+bindsym $mod+down focus down
+bindsym $mod+up focus up
+bindsym $mod+right focus right
+
+# Move windows
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+bindsym $mod+Shift+left move left
+bindsym $mod+Shift+down move down
+bindsym $mod+Shift+up move up
+bindsym $mod+Shift+right move right
+
+# Workspaces
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+# Jump to last active workspace
+bindsym $mod+Tab workspace back_and_forth
+
+# Switch to next workspace with Alt+Tab
+bindsym $alt+Tab workspace next_on_output
+
+# Switch to previous workspace with Alt+Shift+Tab
+bindsym $alt+Shift+Tab workspace prev_on_output
+
+
+# Layout
+bindsym $mod+n splith
+bindsym $mod+m splitv
+bindsym $mod+s layout stacking
+bindsym $mod+t layout tabbed
+bindsym $mod+g layout toggle split
+bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+bindsym $mod+a focus parent
+
+# Scratchpad
+bindsym $mod+Shift+equal move scratchpad
+bindsym $mod+minus scratchpad show
+
+# Resize mode
+mode "resize" {
+    bindsym $left  resize shrink width 10px
+    bindsym $down  resize grow height 10px
+    bindsym $up    resize shrink height 10px
+    bindsym $right resize grow width 10px
+    bindsym left   resize shrink width 10px
+    bindsym down   resize grow height 10px
+    bindsym up     resize shrink height 10px
+    bindsym right  resize grow width 10px
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# Media / brightness keys
+bindsym --locked XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+# screenshot
+bindsym Print              exec grim ~/Pictures/Screenshots/$(date +%Y%m%d-%H%M%S).png
+bindsym $mod+Print         exec grim -g " $$(slurp)" ~/Pictures/Screenshots/$(date +%Y%m%d-%H%M%S)-sel.png
+
+# waybar
+exec --no-startup-id waybar
+# Pre-cache everything at sway startup → zero lag forever after
+exec_always --no-startup-id wofi --show drun --allow-images >/dev/null 2>&1 & sleep 1 && pkill -x wofi
+
+# autotiling 
+exec_always --no-startup-id autotiling 
+
+# Wallpaper
+output * bg ~/Pictures/anime/117542401_p0.png fill
+
+bindsym $alt+Shift+m mode "mouse"
+
+mode "mouse" {
+    # movement via wlrctl
+    bindsym h       exec wlrctl pointer move -15 0
+    bindsym j       exec wlrctl pointer move 0 15
+    bindsym k       exec wlrctl pointer move 0 -15
+    bindsym l             exec wlrctl pointer move 15 0
+    bindsym Shift+h exec wlrctl pointer move -60 0
+    bindsym Shift+j exec wlrctl pointer move 0 60
+    bindsym Shift+k exec wlrctl pointer move 0 -60
+    bindsym Shift+l exec wlrctl pointer move 60 0
+
+    # scrolling
+    bindsym u       seat seat0 cursor press button4 && seat seat0 cursor release button4; \
+                    seat seat0 cursor press button4 && seat seat0 cursor release button4; \
+                    seat seat0 cursor press button4 && seat seat0 cursor release button4; \
+                    seat seat0 cursor press button4 && seat seat0 cursor release button4; \
+                    seat seat0 cursor press button4 && seat seat0 cursor release button4; \
+                    seat seat0 cursor press button4 && seat seat0 cursor release button4; \
+                    seat seat0 cursor press button4 && seat seat0 cursor release button4; \
+                    seat seat0 cursor press button4 && seat seat0 cursor release button4
+
+    bindsym n       seat seat0 cursor press button5 && seat seat0 cursor release button5; \
+                    seat seat0 cursor press button5 && seat seat0 cursor release button5; \
+                    seat seat0 cursor press button5 && seat seat0 cursor release button5; \
+                    seat seat0 cursor press button5 && seat seat0 cursor release button5; \
+                    seat seat0 cursor press button5 && seat seat0 cursor release button5; \
+                    seat seat0 cursor press button5 && seat seat0 cursor release button5; \
+                    seat seat0 cursor press button5 && seat seat0 cursor release button5; \
+                    seat seat0 cursor press button5 && seat seat0 cursor release button5
+
+
+    bindsym --no-repeat Return exec swaymsg seat - cursor press button1   && swaymsg seat - cursor release button1
+    bindsym --no-repeat space  exec swaymsg seat - cursor press button3   && swaymsg seat - cursor release button3
+    bindsym --no-repeat m      exec swaymsg seat - cursor press button2   && swaymsg seat - cursor release button2
+
+    bindsym --no-repeat v exec swaymsg seat - cursor press button1; mode "visual"
+
+    bindsym Escape exec swaymsg seat - cursor release button1; mode "default"
+    bindsym q      exec swaymsg seat - cursor release button1; mode "default"
+}
+
+
+# ───────────────────────────── VISUAL MODE (drag-selection) ───────────────────
+mode "visual" {
+    bindsym h       exec wlrctl pointer move -15 0
+    bindsym j       exec wlrctl pointer move 0 15
+    bindsym k       exec wlrctl pointer move 0 -15
+    bindsym l       exec wlrctl pointer move 15 0
+    bindsym Shift+h exec wlrctl pointer move -60 0
+    bindsym Shift+j exec wlrctl pointer move 0 60
+    bindsym Shift+k exec wlrctl pointer move 0 -60
+    bindsym Shift+l exec wlrctl pointer move 60 0
+
+    bindsym Escape exec swaymsg seat - cursor release button1; mode "mouse"
+    bindsym q      exec swaymsg seat - cursor release button1; mode "mouse"
+    bindsym v      exec swaymsg seat - cursor release button1; mode "mouse"
+}
+
+input type:keyboard {
+    repeat_rate 25
+    repeat_delay 200
+}
+
+# safe keep, if config is corrupt use the default keys 
+include /etc/sway/config.d/* 
